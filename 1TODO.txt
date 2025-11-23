@@ -1,0 +1,29 @@
+create a site Logo
+
+Modify the things to add DARK MODE ✅
+Add all the categories in a proper way in the Navbar✅
+add the routes to the Navbar and Footer section✅
+When user logs in, show the dropdown(if needed), at least show the user name with profile pic.✅
+Add the bookmark section to the Navbar✅
+create /categories route for mode detailed view of cards based on categories✅
+Create a separate API endpoint to filter the data by category name✅
+Create a new .jsx file which will be used to search the webs✅
+improve the UI of About, Bookmarks, Admin Panel, Login, Register✅
+Loading the bookmarks on the /bookmarks page✅
+Fix the pupular section of Hero section✅
+Fix the CARD issue when bookmarking a site ✅
+
+
+
+Handle the UI of /categories/something page ✅
+Handle protected route(bookmarks, admin-panel, etc.) to not accessible when not Logged In✅
+Add the href for each tag of the <Card/>✅
+Handling pagination on /categories page
+Use the AI to write the category of the site also.(you just have to provide the site link, and the title, description, tags, all other things will be handled by the AI)
+Add a premium tag(like bookmark tag) so that only the premium sites will be accessed(after a paid subscription)
+fix the responsiveness
+Change the page Title according to the current page name
+
+
+ADD PRICING PAGE
+APP-HUNTER
