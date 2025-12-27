@@ -13,7 +13,7 @@ import Navbar from '../components/Navbar';
 import { useSession } from 'next-auth/react';
 import LoadingSpinner from '../components/LoadingSpinner';
 
-const PORT = process.env.NEXTAUTH_URL;
+const PORT = process.env.NEXT_PUBLIC_SITE_URL;
 
 
 
@@ -32,11 +32,6 @@ const AdminPanel = () => {
     const [Url, setUrl] = useState('')
     const [Description, setDescription] = useState('')
     const [Categories, setCategories] = useState([])
-    // const [id] = useState(isToUpdate ? location.state.id : '')
-    // const [Name, setName] = useState(isToUpdate ? location.state.name : '')
-    // const [Url, setUrl] = useState(isToUpdate ? location.state.url : '')
-    // const [Description, setDescription] = useState(isToUpdate ? location.state.description : '')
-    // const [Categories, setCategories] = useState(isToUpdate ? (Array.isArray(location.state.tags) ? location.state.tags : []) : [])
     const [message, setMessage] = useState('')
     const [isPending, setIsPending] = useState(false)
     const [categoryInput, setCategoryInput] = useState('')
@@ -46,7 +41,7 @@ const AdminPanel = () => {
     const isAdmin = useSelector(state => state?.admin?.status)
     const dispatch = useDispatch();
     const inputRef = useRef(null)
-    const {data: session, status} = useSession()
+    const { data: session, status } = useSession()
 
 
 
@@ -88,30 +83,60 @@ const AdminPanel = () => {
     }, [categoryInput, Categories])
 
     //
-    async function Generate(url) {
+    async function AddFromSpreadsheet() {
         setIsPending(true)
-        const res = await fetch(`/api/web/generate`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ url }),
-        })
-        const result = await res.json()
-        const data = result.data
-        if (!res.ok) {
-            console.log("URL fetch failed:", result.message);
-            return
+        try {
+            const req = await fetch('/api/add-from-spreadsheet', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // body: JSON.stringify({ url: Url }),
+            })
+            const res = await req.json()
+            if (req.ok) {
+                NotifyUser('Fetched, now adding...', true, 'top-right', 4000)
+                const dataToAdd = res.data
+                console.log('dataTOadd', dataToAdd)
+                // try {
+                //     let allSuccess = true
+                //     for (const item of dataToAdd) {
+                //         let siteData = new FormData()
+                //         siteData.append('name', item.title)
+                //         siteData.append('url', item.url)
+                //         siteData.append('description', item.description.replaceAll('\n', ''))
+                //         siteData.append('categories', JSON.stringify(item.categories))
+                //         console.log('Adding site:', siteData)
+                //         const result = await SendData(siteData)
+                //         if (result.status !== 409 && result.status !== 201) allSuccess = false
+                //     }
+                //     if (allSuccess) {
+                //         NotifyUser('All data added successfully!', true, 'top-right', 4000)
+                //     } else {
+                //         NotifyUser('Failed to add all data!', false, 'top-right', 4000)
+                //     }
+                // } catch (error) {
+                //     console.error('Error adding data to DB:', error);
+                //     NotifyUser(error, false, 'top-right', 4000)
+                // }
+                const reqAdd = await fetch('/api/web/add-bulk', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ arr: dataToAdd }),
+                })
+                const resAdd = await reqAdd.json()
+                if (reqAdd.ok) {
+                    NotifyUser(resAdd.message, true, 'top-right', 4000)
+                } else {
+                    NotifyUser(resAdd.message, 4000)}
+            } else {
+                NotifyUser('Failed to add data from Spreadsheet!!', false, 'top-right', 4000)
+            }
+        } catch (error) {
+            console.error('Error fetching from Spreadsheet:', error);
         }
-        if (result.error && result.error.length > 0) {
-            NotifyUser(result.error, false, 'top-center')
-            console.warn(result.error)
-            setIsPending(false)
-            return
-        }
-        // console.log(data)
-        setName(data.title)
-        setDescription(data.description)
         setIsPending(false)
     }
     //
@@ -187,29 +212,30 @@ const AdminPanel = () => {
             siteData.append('description', Description)
             siteData.append('categories', JSON.stringify(Categories))
             const result = await SendData(siteData)//sending the data
-            if (result.status) {
+            if (result) {
                 setMessage('The data has been submitted!')
-                NotifyUser('Data Added!!', true, 'top-right')
+                NotifyUser(`${result.message}, status: ${result.status}`, true, 'top-right')
 
-                // Clear form
-                setName('')
-                setUrl('')
-                setDescription('')
-                setCategories([])
+
+                // // Clear form
+                // setName('')
+                // setUrl('')
+                // setDescription('')
+                // setCategories([])
             } else {
                 setMessage(result.message)
-                NotifyUser(result.message, false, 'top-right')
+                NotifyUser(`${result.message}, status: ${result.status}`, false, 'top-right')
 
             }
         }
         setIsPending(false)
     }
 
-    if(status =='loading'){
-        return <><LoadingSpinner/></>
+    if (status == 'loading') {
+        return <><LoadingSpinner /></>
     }
 
-    if(!session){
+    if (!session) {
         return null;
     }
 
@@ -223,11 +249,11 @@ const AdminPanel = () => {
                     <div className='w-full flex justify-between items-center'>
                         <h1 className='text-4xl  text-center text-white'>The Admin Panel</h1>
                         <button
-                            onClick={() => { Generate(Url) }}
+                            onClick={() => { AddFromSpreadsheet() }}
                             className='bg-indigo-700 text-white dark:bg-white dark:hover:bg-white/80 dark:text-indigo-700 text-sm p-2 px-4 rounded-xl cursor-pointer disabled:opacity-50'
-                            disabled={!Url && Url.length < 1}
+
                         >
-                            {isPending ? 'Fetching..' : "Get a Hit"}
+                            {isPending ? 'Fetching..' : "Add from Spreadsheet"}
                         </button>
 
                     </div>

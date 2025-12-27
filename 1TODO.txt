@@ -23,6 +23,16 @@ Use the AI to write the category of the site also.(you just have to provide the 
 Add a premium tag(like bookmark tag) so that only the premium sites will be accessed(after a paid subscription)
 fix the responsiveness
 Change the page Title according to the current page name
+Improve the search window UI ✅
+check all the admin routes (ADD, DELETE, UPDATE) ✅
+use redux to store the data at a single point
+
+
+THE SPREADSHEET IMPLEMENTATION: 💻🚫✔️❌
+requirements: google api, spreadsheet link
+first check if all the fields are present (url, title, desc)
+if present, then check if the url already is in the database or not?
+if all fields are present, and the url is also not in the databse, then use AI to create tags based on the available data(url, title, desc), and also format the title and desc
 
 
 ADD PRICING PAGE

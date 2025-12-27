@@ -9,7 +9,8 @@ const WebSchema = new mongoose.Schema({
     },
     url:{
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     description:{
         type: String,
