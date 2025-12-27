@@ -1,6 +1,6 @@
 "use server";
 
-const PORT = process.env.NEXTAUTH_URL ;
+const PORT = process.env.NEXT_PUBLIC_SITE_URL ;
 
 
 //LOGIN
@@ -67,6 +67,7 @@ export async function logoutAdmin() {
 
 //CREATE
 export async function SendData(siteData) {
+  // console.log("in action.js: ", siteData)
   try {
     const response = await fetch(`${PORT}/api/web`, {
       method: "POST",
@@ -97,14 +98,15 @@ export async function SendData(siteData) {
 
 //UPDATE
 export async function UpdateData(id, NewData) {
-  console.log("sending data to update:", NewData)
+  // console.log("sending data to update:", NewData)
   try {
-    const response = await fetch(`${PORT}/api/web?id=${id}`, {
+    const response = await fetch(`${PORT}/api/web`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        web_id: id,
         name: NewData.name,
         url: NewData.url,
         description: NewData.description,
@@ -119,7 +121,7 @@ export async function UpdateData(id, NewData) {
     }
 
     const result = await response.json();
-    console.log("Data updated successfully. status:", result.status);
+    console.log(result.message, result.status);
     return true;
   } catch (error) {
     console.error("Error updating data:", error);
@@ -131,8 +133,13 @@ export async function UpdateData(id, NewData) {
 export async function DeleteData(id) {
   try {
     // console.log(`going to delete for ID: ${id}`)
-    const response = await fetch(`${PORT}/api/web/${id}`, {
+    const response = await fetch(`${PORT}/api/web`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ web_id: id }),
+      credentials: "include",
     });
     const result = await response.json();
     if (!response.ok) {
