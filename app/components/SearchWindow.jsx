@@ -3,6 +3,8 @@ import { Search, X } from 'lucide-react';
 import React, { useState, useEffect } from 'react'
 import Card from './Card';
 import { NotifyUser } from './Notification';
+import LoadingSpinner from './LoadingSpinner';
+import { useSelector } from 'react-redux';
 
 
 
@@ -10,20 +12,32 @@ import { NotifyUser } from './Notification';
 const SearchWindow = ({ onClose }) => {
 
 
-  const PORT = process.env.NEXT_PUBLIC_PORT || "http://localhost:3000";
+  const PORT = process.env.NEXT_PUBLIC_PORT
+  console.log("PORT in SearchWindow:", PORT);
   const [WebData, setWebData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [noResults, setNoResults] = useState(false);
   const [showCards, setShowCards] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // TODO: Fetch data from server on component mount
+  const { webData: data, loading: isloading, error: iserror } = useSelector((state) => state.web);
+  console.log("Redux value in Searchwindow", data.length, isloading, iserror);
 
 
 
   useEffect(() => {
-    getDataFromServer();
-  }, []);
+    // getDataFromServer();
+    if (data.length === 0) return;
+    setLoading(true)
+    setWebData(data);
+    setFilteredData(data);
+    setLoading(false);
+  }, [data]);
 
   const getDataFromServer = async () => {
     try {
+      setLoading(true);
       const req = await fetch(`${PORT}/api/web`, {
         method: "GET",
         headers: {
@@ -39,18 +53,19 @@ const SearchWindow = ({ onClose }) => {
       // console.warn("Data fetched from server:", res);
       setWebData(res.data);
       setFilteredData(res.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error(error);
     }
   };
 
   const handleSearch = (param) => {
-    console.log('Searching for:', param);
-    if(param && param.length > 0){
-      setShowCards(true);
-    }
+
+    setLoading(true)
     const value = param.toLowerCase();
     if (value && value.length > 0) {
+      setShowCards(true);
       const filtered = filteredData.filter(
         (obj) =>
           obj.name.toLowerCase().includes(value) ||
@@ -60,10 +75,14 @@ const SearchWindow = ({ onClose }) => {
         setNoResults(false)
         setWebData(filtered);
       }
-      else setNoResults(true)
+      else {
+        setNoResults(true)
+      }
     } else {
+      setShowCards(false);
       setWebData(filteredData);
     }
+    setLoading(false);
   };
 
   const handleReloadAfterDeletion = () => {
@@ -78,6 +97,8 @@ const SearchWindow = ({ onClose }) => {
   };
 
 
+
+  if (loading) return <LoadingSpinner />;
 
 
   return (
@@ -96,9 +117,9 @@ const SearchWindow = ({ onClose }) => {
           />
         </div>
 
-        <div className="h-8/10 overflow-y-auto handle-scroll w-4/5 flex flex-wrap gap-4 justify-center items-center py-10 text-white rounded-lg border-2 border-white">
+        <div className="h-8/10 overflow-y-auto handle-scroll w-4/5 flex flex-wrap gap-4 justify-center items-center py-10 text-white rounded-lg">
           {showCards && WebData && WebData?.length > 0 ? (
-            noResults ? "Oops! No results found."
+            noResults ? (<h3 className="text-2xl">No results found!</h3>)
               : (WebData.map((data, index) => (
                 <Card
                   key={index}

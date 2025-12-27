@@ -12,18 +12,32 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "../components/LoadingSpinner";
 
-const PORT = process.env.NEXTAUTH_URL;
+const PORT = process.env.NEXT_PUBLIC_SITE_URL;
 
 const Bookmarks = () => {
 
   const [WebData, setWebData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [noResults, setNoResults] = useState(false);
-
-  const state = useSelector(state => state.admin.status)
-  const dispatch = useDispatch();
   const { data: session, status } = useSession()
   const router = useRouter()
+
+
+  // TODO: FIX IT
+  const { webData: data, loading: isloading, error: iserror } = useSelector((state) => state.web);
+  console.log("Redux value in /bookmarks", data.length, isloading, iserror);
+
+
+
+  useEffect(() => {
+    // getDataFromServer();
+    if (data.length === 0) return;
+
+    setWebData(data);
+    setFilteredData(data);
+
+  }, [data]);
+
 
   useEffect(() => {
     if (status === "loading") return;
@@ -34,13 +48,7 @@ const Bookmarks = () => {
     }
   }, [session, status, router]);
 
-  if (status === "loading") {
-    return <><LoadingSpinner/></>
-  }
 
-  if (!session) {
-    return null;
-  }
 
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
@@ -94,13 +102,17 @@ const Bookmarks = () => {
 
   const handleReloadAfterDeletion = () => {
     NotifyUser('Data deleted', true, 'top-center')
-    getBookmarkedData();
+    // getBookmarkedData();
   };
 
-  useEffect(() => {
-    getBookmarkedData();
-  }, []);
 
+  if (status === "loading") {
+    return <><LoadingSpinner /></>
+  }
+
+  if (!session) {
+    return null;
+  }
 
   return (
     <div className="w-full flex flex-col justify-center items-center">

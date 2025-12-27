@@ -1,43 +1,44 @@
 "use client";
 
-import { useState, useEffect, useContext, useMemo } from "react";
-import { useParams } from "next/navigation.js";
+import { useState, useEffect} from "react";
 import { Toaster } from 'react-hot-toast';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import Card from "../components/Card.jsx";
 import Pagination from "../components./Pagination.jsx";
 import { NotifyUser } from '../components./Notification.jsx'
 import { allCategories } from '@/public/categories.js'
-import Navbar from "../components./Navbar.jsx";
-
-import { setWebData, setLoading, setError } from "@/app/redux/webSlice.js";
-import Navbar2 from "../components/Navbar2.jsx";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 
-const PORT = process.env.NEXTAUTH_URL || "http://localhost:3000";
+const PORT = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 
 const Categories = () => {
 
 
-    const dispatch = useDispatch()
 
     // universal-parameters
     const [WebData, setWebData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [noResults, setNoResults] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
-    const [pageValue, setPageValue] = useState()
-
-    const params = useParams()
-    console.log(params)
+    // console.log(params)
     // const PageNumber = params?.pageId?.split('-')[1] || null
 
+    const { webData: data, loading: isloading, error: iserror } = useSelector((state) => state.web);
+    console.log("Redux value in /categories", data.length, isloading, iserror);
+
+
+  // TODO: FIX IT
     useEffect(() => {
-        getDataFromServer()
-    }, [])
+        // getDataFromServer();
+        if (data.length === 0) return;
+        // setLoading(true)
+        setWebData(data);
+        setFilteredData(data);
+        // setLoading(false);
+    }, [data]);
 
 
     const getDataFromServer = async () => {
@@ -61,8 +62,7 @@ const Categories = () => {
             setLoading(false);
             setNoResults(false)
         } catch (error) {
-            console.log("Error fetching data from server:", error);
-            dispatch(setError(error.message));
+            console.error(error);
         }
     };
 
@@ -149,7 +149,7 @@ const Categories = () => {
     // New function to handle data change notification from Card
     const handleReloadAfterDeletion = () => {
         NotifyUser('Data deleted', true, 'top-center')
-        getDataFromServer();
+        // getDataFromServer();
     };
 
 
@@ -174,9 +174,8 @@ const Categories = () => {
 
 
 
-    if (loading) {
-        return <LoadingSpinner/>
-    }
+    if (loading) return <LoadingSpinner />;
+
 
 
     return (
@@ -239,7 +238,7 @@ const Categories = () => {
 
 
 
-                 {/* Card container */}
+                {/* Card container */}
                 <div id="1" className="w-full min-h-screen flex flex-wrap gap-4 justify-center items-center py-10">
                     {WebData && WebData?.length > 0 ? (
                         noResults ? "Oops! No results found."
