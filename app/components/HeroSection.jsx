@@ -125,7 +125,7 @@ const Hero = () => {
         </div>
         {isSearchWindowOpen && (
           <div className="fixed w-screen h-screen inset-0 bg-black/70 bg-opacity-50 flex items-center justify-center z-50">
-            <div className='w-full h-full mx-auto border-1 blur-1 rounded-lg'
+            <div className='w-full h-full mx-auto backdrop-blur-sm rounded-lg'
               onClick={(e) => e.stopPropagation()}>
               <SearchWindow onClose={() => setIsSearchWindowOpen(false)} />
             </div>

@@ -15,7 +15,7 @@ const Navbar = () => {
   const dispatch = useDispatch()
 
   const currentSite = null
-  const SITE_URL = process.env.NEXTAUTH_URL || "http://localhost:3000"
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
   const [isOpen, setIsOpen] = useState(false);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [theme, setTheme] = useState();
@@ -35,7 +35,7 @@ const Navbar = () => {
   }, [theme]);
 
   useEffect(() => {
-    if (session && session?.user) {
+    if (session && session.user) {
       verifyAdmin();
     }
   }, [session])
@@ -50,6 +50,7 @@ const Navbar = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email: session?.user?.email }),
+        credentials: 'include',
       });
       const result = await response.json();
       // console.log("Admin verification result:", result);

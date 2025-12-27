@@ -11,7 +11,7 @@ import Navbar from "./Navbar.jsx";
 import { useParams } from "next/navigation.js";
 import { setWebData, setLoading, setError } from '../redux/webSlice'
 
-const PORT = process.env.NEXTAUTH_URL || "http://localhost:3000";
+const PORT = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 
 const Home = () => {
