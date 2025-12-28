@@ -1,7 +1,6 @@
 async function fetchFromSpreadsheet() {
   // REPLACE THESE with your actual values
-  const API_KEY = "AIzaSyDszMLwJxETtEyUPVwyIBZOwvFjLsSbo5Y";
-  // const API_KEY = process.env.GOOGLE_CLOUD_CONSOLE;
+  const API_KEY = process.env.GOOGLE_CLOUD_CONSOLE;
   const SHEET_ID = "15u2Vlfn8oXJMxBNTCo-tT_TJNc9osu_5xLT2mctlw-Q";
   const RANGE = "Sheet1!A1:Z1000"; // Adjust range as needed
 
