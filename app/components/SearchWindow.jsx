@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react'
 import Card from './Card';
 import { NotifyUser } from './Notification';
 import LoadingSpinner from './LoadingSpinner';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { loadWebData } from '../redux/webSlice';
 
 
 
@@ -13,7 +14,7 @@ const SearchWindow = ({ onClose }) => {
 
 
   const PORT = process.env.NEXT_PUBLIC_PORT
-  console.log("PORT in SearchWindow:", PORT);
+  // console.log("PORT in SearchWindow:", PORT);
   const [WebData, setWebData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [noResults, setNoResults] = useState(false);
@@ -87,7 +88,7 @@ const SearchWindow = ({ onClose }) => {
 
   const handleReloadAfterDeletion = () => {
     NotifyUser('Data deleted', true, 'top-center')
-    getDataFromServer();
+    dispatch(loadWebData());
   };
 
   const handleKeyPress = (e) => {
@@ -114,6 +115,7 @@ const SearchWindow = ({ onClose }) => {
             placeholder="Search for websites, tools, resources..."
             onChange={(e) => handleSearch(e.target.value)}
             className="h-full w-full text-lg bg-transparent outline-none text-white "
+            autoFocus
           />
         </div>
 

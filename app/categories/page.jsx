@@ -2,7 +2,8 @@
 
 import { useState, useEffect} from "react";
 import { Toaster } from 'react-hot-toast';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { loadWebData } from "../redux/webSlice";
 
 import Card from "../components/Card.jsx";
 import Pagination from "../components./Pagination.jsx";
@@ -10,13 +11,13 @@ import { NotifyUser } from '../components./Notification.jsx'
 import { allCategories } from '@/public/categories.js'
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 
-const PORT = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 
 const Categories = () => {
-
-
-
+    
+    
+    
+    const PORT = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
     // universal-parameters
     const [WebData, setWebData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
@@ -33,7 +34,7 @@ const Categories = () => {
   // TODO: FIX IT
     useEffect(() => {
         // getDataFromServer();
-        if (data.length === 0) return;
+        // if (data.length === 0) return;
         // setLoading(true)
         setWebData(data);
         setFilteredData(data);
@@ -174,7 +175,7 @@ const Categories = () => {
 
 
 
-    if (loading) return <LoadingSpinner />;
+    if (isloading) return <LoadingSpinner />;
 
 
 
