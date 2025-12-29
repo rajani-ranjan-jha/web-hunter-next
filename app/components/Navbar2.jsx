@@ -92,7 +92,7 @@ const Navbar2 = ({theme, toggleTheme}) => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-8">
             <a
               href="/"
               className={`transition-colors duration-200 ${theme === 'dark'
@@ -163,7 +163,7 @@ const Navbar2 = ({theme, toggleTheme}) => {
           </div>
 
           {/* Right Side - Theme Toggle & Auth Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-4">
             <button
               onClick={toggleTheme}
               className={`p-2 rounded-lg transition-all duration-200 ${theme === 'dark'
@@ -183,7 +183,7 @@ const Navbar2 = ({theme, toggleTheme}) => {
                       : 'text-gray-700 hover:bg-gray-100'
                     }`}
                 >
-                  <span className="capitalize">{session.user.name}</span>
+                  <span className="capitalize">{'Hello, '+session.user.name.split(' ')[0]}</span>
                   <Image src={session?.user?.image} alt="user" width={30} height={30} className="rounded-full" />
                   {isDropDownOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                 </button>
@@ -254,7 +254,7 @@ const Navbar2 = ({theme, toggleTheme}) => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center space-x-2">
+          <div className="lg:hidden flex items-center space-x-2">
             <button
               onClick={toggleTheme}
               className={`p-2 rounded-lg transition-all duration-200 ${theme === 'dark'
@@ -280,7 +280,7 @@ const Navbar2 = ({theme, toggleTheme}) => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className={`md:hidden transition-all duration-300 ${theme === 'dark' ? 'bg-gray-900 border-t border-gray-800' : 'bg-white border-t border-gray-200'
+        <div className={`lg:hidden transition-all duration-300 ${theme === 'dark' ? 'bg-gray-900 border-t border-gray-800' : 'bg-white border-t border-gray-200'
           }`}>
           <div className="px-4 pt-2 pb-4 space-y-2">
             <a

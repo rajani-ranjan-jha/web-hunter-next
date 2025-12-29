@@ -33,8 +33,9 @@ const Bookmarks = () => {
     // getDataFromServer();
     if (data.length === 0) return;
 
-    setWebData(data);
-    setFilteredData(data);
+    // setWebData(data);
+    // setFilteredData(data);
+    FilterBookmarked(data);
 
   }, [data]);
 
@@ -68,24 +69,8 @@ const Bookmarks = () => {
     }
   };
 
-  const getBookmarkedData = async () => {
+  const FilterBookmarked = async (data) => {
     try {
-      // Fetch data from server
-      console.warn(`Fetching data from server at: ${PORT}`);
-      const req = await fetch(`/api/web`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      const res = await req.json();
-      const data = res.data;
-      if (!data || data.length === 0) {
-        console.error("No data found from the server!");
-        return;
-      }
-
       const storedBookmarks = JSON.parse(localStorage.getItem('web-hunter-bookmarks')) || [];
 
       // Filter data to only include bookmarked items
@@ -115,7 +100,7 @@ const Bookmarks = () => {
   }
 
   return (
-    <div className="w-full flex flex-col justify-center items-center">
+    <div className="pt-16 mt-16 min-h-screen w-full flex flex-col justify-center items-center">
       <Toaster />
 
       {WebData && WebData.length > 0 &&

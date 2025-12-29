@@ -92,7 +92,7 @@ const Card = ({
     }, [id]);
 
     return (
-        <div className='w-80 h-100 flex flex-col gap-2 justify-between items-center backdrop-blur-2xl transition-all duration-300 hover:translate-x-0 hover:translate-y-0 hover:scale-103 hover:shadow-indigo-500 dark:hover:shadow-white shadow-lg  rounded-xl  text-white p-4 border-1'>
+        <div className='w-80 min-h-100 flex flex-col gap-2 justify-between items-center backdrop-blur-2xl transition-all duration-300 hover:translate-x-0 hover:translate-y-0 hover:scale-103 hover:shadow-white shadow-lg  rounded-xl  text-white p-4 border-1'>
 
             {isAdmin && (
                 <div className='w-full flex gap-2 justify-end items-center'>
@@ -118,12 +118,12 @@ const Card = ({
                     alt={`${url}`}
                     onError={(e) => { e.target.onerror = null; e.target.src = '/default-favicon.ico'; }}
                 />
-                <h3 className='p-2 text-2xl text-wrap font-semibold'>{name}</h3>
+                <h3 className='p-2 text-2xl font-semibold'>{name}</h3>
             </div>
 
             <div className='w-full flex justify-around items-center text-center '>
                 {description && description.length > 0 ? (
-                    <p id='description' className='px-3 text-md'>{description}</p>
+                    <p id='description' className='px-3 text-md'>{description.length > 120 ? description.slice(0,120) + '...' : description}</p>
                 ) : (
                     <p className='px-3 text-md'>No description available</p>
                 )}

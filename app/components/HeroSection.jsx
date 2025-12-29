@@ -61,6 +61,7 @@ const Hero = () => {
                   placeholder="Search for websites, tools, resources..."
                   onClick={() => setIsSearchWindowOpen(true)}
                   className="flex-1 px-6 py-5 text-lg bg-transparent outline-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                  readOnly
                 />
                 {/* not needed */}
                 <button

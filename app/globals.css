@@ -3,6 +3,14 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 
+@theme{
+  --color-primary: white; /* a shade of blue */
+  --color-secondary: #0552b3; 
+  --text-primary: red;
+  
+}
+
+
 *{
     font-family: 'Poppins','Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }

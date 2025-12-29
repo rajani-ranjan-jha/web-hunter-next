@@ -113,10 +113,19 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-            <p className="text-sm flex items-center text-gray-600 dark:text-gray-400">
-              © {currentYear} Web-Hunter. Made with{' '}
-              <Heart className="w-4 h-4 mx-1 text-red-500 fill-current" />
-              by <a href='mailto:rajanijha50@gmail.com' className='mx-1 underline'>Rajani Ranjan Jha</a> for developers.
+            <p className="w-full sm:w-auto text-sm text-wrap sm:flex items-center text-gray-600 dark:text-gray-400">
+
+              © {currentYear} Web-Hunter.
+              Made with
+              <Heart className="w-4 h-4 text-red-500 sm:mx-1 fill-current" />
+              
+              by
+              <a href='mailto:rajanijha50@gmail.com'
+                className='mx-1 underline text-wrap'>
+                Rajani Ranjan Jha
+              </a>
+              for developers.
+
             </p>
             <div className="flex space-x-6">
               <a
